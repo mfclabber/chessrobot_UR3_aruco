@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <node pkg="downward_ros" name="downward_client" type="downward_client.py" output="screen"/>
+    <node pkg="downward_ros" name="downward_server" type="downward_server.py"  launch-prefix="xterm -e" respawn="true"/>
+</launch>

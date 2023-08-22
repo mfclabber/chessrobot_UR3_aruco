@@ -1,0 +1,121 @@
+<?xml version="1.0" ?>
+<launch>
+        <arg name="team_A_enabled" default="true" />
+        <arg name="my_robot_ip" default="10.5.20.80" />
+        <arg name="e-series" default="false" />
+
+        <arg name="camera_enabled" default="false" />
+
+        <!-- switch between real and simulated.. or simply display -->
+        <arg name="load_real" default="false" />
+        <arg name="load_sim" default="true" />
+
+        <!-- choose GUI control options -->
+        <arg name="joint_gui_controller" default="true" />
+
+        <!-- Gazebo starts PAUSED by default -->
+        <!-- This way we can fix the joint values when spawned -->
+        <arg name="paused" default="true" />
+
+        <arg name="team_A_shoulder_pan_joint_initial_value" default="-1.0" />
+        <arg name="team_A_shoulder_lift_joint_initial_value" default="-2.0" />
+        <arg name="team_A_elbow_joint_initial_value" default="-0.5" />
+        <arg name="team_A_wrist_1_joint_initial_value" default="-0.5" />
+        <arg name="team_A_wrist_2_joint_initial_value" default="2.0" />
+        <arg name="team_A_wrist_3_joint_initial_value" default="0.5" />
+        <arg name="team_A_gripper_right_driver_joint_initial_value" default="0.5" />
+
+        <!-- configuration of the simulation -->
+        <group if="$(arg load_sim)">
+            <include file="$(find gazebo_ros)/launch/empty_world.launch">
+                <arg name="world_name" value="$(find chesslab_setup)/worlds/flat_chesslab_simple.world"/>
+                <arg name="paused" value="$(arg paused)" />
+                <arg name="gui" value="true" />
+                <arg name="use_sim_time" default="true"/>
+                <arg name="headless" default="false"/>
+                <arg name="debug" default="false"/>
+            </include>
+        </group>
+
+        <!-- TEAM A LAUNCH -->
+        <group if="$(arg team_A_enabled)" ns="team_A_arm">
+
+            <!-- SIMULATION -->
+            <group if="$(arg load_sim)">
+              <!-- send robot urdf to param server -->
+               <param name="robot_description" command="$(find xacro)/xacro $(find chesslab_setup)/robot/team_A_arm_gripper.urdf.xacro" />
+               <!-- load all controllers configurations -->
+        	   <rosparam file="$(find chesslab_setup)/config/new_controllers.yaml" command="load"/>
+               <!-- within namespace to fit the real part; see below-->
+               <group ns="gripper">
+                 <rosparam file="$(find chesslab_setup)/config/new_controllers_gripper.yaml" command="load"/>
+               </group>
+
+               <!-- state publishers -->
+               <param name="publish_frequency" value="100"/>
+               <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+               <!-- arm controllers -->
+        	   <node  name="load_and_start_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller joint_trajectory_controller gripper/joint_state_controller gripper/gripper_controller" />
+
+               <node name="spawn_team_A_arm_model" pkg="gazebo_ros" type="spawn_model"
+                          args="-urdf -param /team_A_arm/robot_description -model team_A_arm
+                                -J team_A_shoulder_pan_joint $(arg team_A_shoulder_pan_joint_initial_value)
+                                -J team_A_shoulder_lift_joint $(arg team_A_shoulder_lift_joint_initial_value)
+                                -J team_A_elbow_joint $(arg team_A_elbow_joint_initial_value)
+                                -J team_A_wrist_1_joint $(arg team_A_wrist_1_joint_initial_value)
+                                -J team_A_wrist_2_joint $(arg team_A_wrist_2_joint_initial_value)
+                                -J team_A_wrist_3_joint $(arg team_A_wrist_3_joint_initial_value)
+                                -J team_A_gripper_right_driver_joint $(arg team_A_gripper_right_driver_joint_initial_value)" respawn="false" output="screen" />
+            </group>
+
+            <!-- REAL -->
+            <group if="$(arg load_real)">
+                <!-- arm hwiface -->
+                <!-- loads robot description, driver, controllers and controller manager-->
+                <group if="$(arg e-series)">
+                	<include file="$(find chesslab_setup)/launch/ur3e_bringup_custom.launch">
+                	<arg name="controller_config_file" value="$(find chesslab_setup)/config/new_controllers.yaml"/>
+                	<arg name="controllers" value="joint_state_controller joint_trajectory_controller"/>
+                	<arg name="robot_description_file" value="$(find chesslab_setup)/launch/ur3_upload_custom.launch"/>
+                	<arg name="stopped_controllers" value="joint_velocity_controller"/>
+                	<arg name="robot_ip" value="$(arg my_robot_ip)"/>
+                	<arg name="kinematics_config" value="$(find chesslab_setup)/config/my_robot_calibration.yaml"/>
+	                </include>
+                </group>
+                <group unless="$(arg e-series)">
+                    <include file="$(find chesslab_setup)/launch/ur3_bringup_custom.launch">
+                	       <arg name="controller_config_file" value="$(find chesslab_setup)/config/new_controllers.yaml"/>
+                	       <arg name="controllers" value="joint_state_controller joint_trajectory_controller"/>
+                	       <arg name="robot_description_file" value="$(find chesslab_setup)/launch/ur3_upload_custom.launch"/>
+                	       <arg name="stopped_controllers" value="joint_velocity_controller"/>
+                	       <arg name="robot_ip" value="$(arg my_robot_ip)"/>
+                	       <arg name="kinematics_config" value="$(find chesslab_setup)/config/my_robot_calibration.yaml"/>
+	                </include>
+                </group>
+
+                <!-- Starting the gripper -->
+                <node name="Robotiq2FGripperRtuNode" pkg="robotiq_2f_gripper_control" type="Robotiq2FGripperRtuNode.py" args="/dev/ttyUSB0"/>
+                <!-- Starting the gripper_server -->
+                <node name="gripper_server" pkg="robotiq_2f_gripper_server" type="gripper_server"  launch-prefix="xterm -e" >
+                      <remap
+                        from="/Robotiq2FGripperRobotOutput"
+                        to="/team_A_arm/Robotiq2FGripperRobotOutput"
+                      />
+                </node>
+                <node name="gripper_client" pkg="robotiq_2f_gripper_server" type="gripper_client" launch-prefix="xterm -e"/>
+            </group>
+
+            <group if="$(arg joint_gui_controller)">
+                <node name="team_A_arm_gui" pkg="rqt_gui" type="rqt_gui" respawn="false" args="--perspective-file $(find chesslab_setup)/config/team_A_all.perspective" output="screen" />
+            </group>
+        </group>
+
+        <!-- Starting ur3 action client to send trajectories to the robot -->
+        <node name="ur3_action_client" pkg="test_hardware" type="ur3_action_client" launch-prefix="xterm -e"/>
+
+        <!-- Starting ur3 action client to send motions to the robot -->
+        <group if="$(arg load_sim)">
+            <node name="gripper_action_client" pkg="test_hardware" type="gripper_action_client" launch-prefix="xterm -e"/>
+        </group>
+</launch>

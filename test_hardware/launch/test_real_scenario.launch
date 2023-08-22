@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find test_hardware)/launch/test_hardware_demo.launch.xml">
+        <arg name="load_real" value="true" />
+        <arg name="my_robot_ip" value="10.5.20.79" />
+        <arg name="e-series" value="true" />
+        <arg name="load_sim" value="false" />
+        <arg name="joint_gui_controller" value="true" />
+    </include>
+</launch>

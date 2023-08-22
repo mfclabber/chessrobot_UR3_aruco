@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+    <include file="$(find test_hardware)/launch/test_hardware_demo.launch.xml">
+        <arg name="load_real" value="false" />
+        <arg name="load_sim" value="true" />
+        <arg name="joint_gui_controller" value="true" />
+    </include>
+</launch>

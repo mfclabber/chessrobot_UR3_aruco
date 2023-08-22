@@ -1,0 +1,19 @@
+Idea
+====
+
+
+Fer un node, markerpool. Aquest es subscriu o al aruco markers o
+alavar_markerlist. Tenen un topic molt similar.
+
+Aquest node emmagatzema la posició de tots els markers que hi va trobant.
+Una opció vàlida seria que guardés els últims 3 segons, per exemple, i que
+fes la mitja amb el que tenim.
+
+Aleshores, tindríem un servei que li passessis un id i et retornés el valor
+de la pose, i alguna mena de booleà conforme si es correcte o no. Això
+serviria per: 1) si el marker hi és a la llista o no, 2) si hi era, però la
+dada és molt antiga; una mena de confiança.
+
+lpa 20201023
+
+

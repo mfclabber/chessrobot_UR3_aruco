@@ -1,0 +1,19 @@
+rosdistro: 'Debian
+
+  '
+roslaunch:
+  uris: {host_indiana__34239: 'http://indiana:34239/', host_indiana__35561: 'http://indiana:35561/',
+    host_indiana__35835: 'http://indiana:35835/', host_indiana__38615: 'http://indiana:38615/',
+    host_indiana__42357: 'http://indiana:42357/', host_indiana__43579: 'http://indiana:43579/',
+    host_indiana__44263: 'http://indiana:44263/', host_indiana__45733: 'http://indiana:45733/'}
+rosversion: '1.14.3
+
+  '
+run_id: 72fe0754-6f91-11ea-920f-00241d7e4202
+tablecalibrator:
+  camera_frame: usb_ms_cam
+  markerFixList: [90, 92, 93, 91]
+  markerFixPos_90: [0.04, 0.04, 0.0, 1.0, 0.0, 0.0, 0.0]
+  markerFixPos_91: [0.54, 0.04, 0.0, 1.0, 0.0, 0.0, 0.0]
+  markerFixPos_92: [0.04, 0.39, 0.0, 1.0, 0.0, 0.0, 0.0]
+  markerFixPos_93: [0.54, 0.39, 0.0, 1.0, 0.0, 0.0, 0.0]

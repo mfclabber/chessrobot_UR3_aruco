@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<launch>
+        <!-- Starting the gripper -->
+        <node name="Robotiq2FGripperRtuNode" pkg="robotiq_2f_gripper_control" type="Robotiq2FGripperRtuNode.py" args="/dev/ttyUSB0"/>
+        
+        <!-- Starting the gripper_server -->
+        <node name="gripper_server" pkg="robotiq_2f_gripper_server" type="gripper_server"  launch-prefix="xterm -e"/>
+</launch>

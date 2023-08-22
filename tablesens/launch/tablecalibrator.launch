@@ -1,0 +1,6 @@
+<launch>
+    <!-- Load parameters -->
+    <rosparam file="$(find tablesens)/conf/tablesetup-esaii-pl2.yaml" command="load"/>
+    <!-- Start node -->
+    <node name="tablecalibrator" pkg="tablesens" type="tablecalibrator" output="screen"/>
+  </launch>

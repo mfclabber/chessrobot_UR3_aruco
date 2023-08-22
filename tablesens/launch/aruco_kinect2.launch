@@ -1,0 +1,38 @@
+<launch>
+   <include file="$(find tablesens)/launch/aruco_single_kinect.launch.xml">
+        <arg name="node_name"	       value="aruco_single_90"/>
+	<arg name="markerId"        value="90"/>
+	<arg name="marker_frame"    value="aruco_frame_90"/>
+        <arg name="markerSize"      value="0.05"/>  
+   </include>
+   <include file="$(find tablesens)/launch/aruco_single_kinect.launch.xml">
+        <arg name="node_name"	       value="aruco_single_91"/>
+	<arg name="markerId"        value="91"/>
+	<arg name="marker_frame"    value="aruco_frame_91"/>
+        <arg name="markerSize"      value="0.05"/>  
+   </include>
+   <include file="$(find tablesens)/launch/aruco_single_kinect.launch.xml">
+        <arg name="node_name"	       value="aruco_single_92"/>
+	<arg name="markerId"        value="92"/>
+	<arg name="marker_frame"    value="aruco_frame_92"/>
+        <arg name="markerSize"      value="0.05"/>  
+   </include>
+   <include file="$(find tablesens)/launch/aruco_single_kinect.launch.xml">
+        <arg name="node_name"	       value="aruco_single_93"/>
+	<arg name="markerId"        value="93"/>
+	<arg name="marker_frame"    value="aruco_frame_93"/>
+        <arg name="markerSize"      value="0.05"/>  
+   </include>
+   <include file="$(find tablesens)/launch/aruco_single_kinect.launch.xml">
+        <arg name="node_name"	       value="aruco_single_94"/>
+	<arg name="markerId"        value="94"/>
+	<arg name="marker_frame"    value="aruco_frame_94"/>
+	<arg name="markerSize"      value="0.05"/>  
+   </include>   <include file="$(find tablesens)/launch/aruco_single_kinect.launch.xml">
+        <arg name="node_name"	       value="aruco_single_95"/>
+	<arg name="markerId"        value="95"/>
+	<arg name="marker_frame"    value="aruco_frame_95"/>
+	<arg name="markerSize"      value="0.05"/>  
+   </include>
+
+</launch>

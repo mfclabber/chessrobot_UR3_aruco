@@ -1,0 +1,15 @@
+<launch>
+    <!-- kinect2 ioc roblab -->
+    -->
+    <include file="$(find tablesens)/launch/kinect2_bridge_hq.launch">
+    </include>
+
+    <!-- Aruco markers -->
+    <include file="$(find tablesens)/launch/marker_publisher.launch">
+    </include> 
+
+    <!--kinect_camera_link-->
+    <!--
+    <node pkg="tf2_ros" type="static_transform_publisher" name="camera_broadcaster" args="0.53238 0.208307 0.992119 0.993546 0.0106076 -0.00113365 -0.112924 /world /kinect2_rgb_optical_frame"/>
+    -->
+</launch>

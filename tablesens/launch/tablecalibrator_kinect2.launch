@@ -1,0 +1,22 @@
+<launch>
+    <!-- Load parameters -->
+    <rosparam file="$(find tablesens)/conf/tablesetup-ioc.yaml" command="load"/>
+
+    <!-- kinect2 ioc roblab -->
+    
+    <include file="$(find tablesens)/launch/kinect2_bridge_hq.launch">
+    </include>
+
+    <!-- Avtrack_alvar -->
+    <include file="$(find tablesens)/launch/ar_track_alvar_kinect.launch">
+    </include>
+    
+    <!-- Start node -->
+    <node name="tablecalibrator" pkg="tablesens" type="tablecalibrator" output="screen"/>
+
+    <!--kinect_camera_link-->
+    <!--<node pkg="tf2_ros" type="static_transform_publisher" name="camera_broadcaster" args="0.941755 -0.2185 1.0667 0.996651 0.000829736 0.0263784 -0.0773978 /map /kinect2_rgb_optical_frame"
+/>-->
+
+
+    </launch>
