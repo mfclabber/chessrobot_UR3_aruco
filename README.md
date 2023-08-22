@@ -17,7 +17,7 @@ The world reference frame is located at the center of the chessboard.
 
 ### Provided packages
 
-The following packages grouped in the meta-repository ros2223-final-project meta-repository are provided:
+The following packages grouped in the meta-repository are provided:
 
 * UR3-IK: ROS server that ofers the Inverse Kinematics of the UR3 robot as a service.
 
